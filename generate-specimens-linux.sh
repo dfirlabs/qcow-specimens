@@ -48,6 +48,9 @@ qemu-img create -f qcow2 --object secret,id=sec0,data=qcow-TEST -o compat=v2,pre
 echo "Creating: qcow version 2; with LUKS encryption"
 qemu-img create -f qcow2 --object secret,id=sec0,data=qcow-TEST -o compat=v2,preallocation=metadata,encrypt.format=luks,encrypt.key-secret=sec0 ${SPECIMENS_PATH}/version2_with_luks_encryption.qcow 4M
 
+echo "Creating: qcow version 2; with 128-bit AES-CBC encryption and zlib compression"
+qemu-img create -f qcow2 --object secret,id=sec0,data=qcow-TEST -o compat=v2,preallocation=metadata,compression_type=zlib,encrypt.format=aes,encrypt.key-secret=sec0 ${SPECIMENS_PATH}/version2_with_zlib_and_aes128.qcow 4M
+
 echo "Creating: qcow version 2; with backing file"
 qemu-img create -f qcow2 -o compat=v2,backing_fmt=qcow2,backing_file=version2.qcow ${SPECIMENS_PATH}/version2_with_backing_file.qcow 4M
 
@@ -61,8 +64,11 @@ qemu-img snapshot -c snapshot1 ${SPECIMENS_PATH}/version2_with_snapshot.qcow
 echo "Creating: qcow version 3"
 qemu-img create -f qcow2 -o compat=v3,preallocation=metadata ${SPECIMENS_PATH}/version3.qcow 4M
 
-echo "Creating: qcow version 3; with compression"
+echo "Creating: qcow version 3; with zlib compression"
 qemu-img create -f qcow2 -o compat=v3,preallocation=metadata,compression_type=zlib ${SPECIMENS_PATH}/version3_with_compression_type_zlib.qcow 4M
+
+echo "Creating: qcow version 3; with zstd compression"
+qemu-img create -f qcow2 -o compat=v3,preallocation=metadata,compression_type=zstd ${SPECIMENS_PATH}/version3_with_compression_type_zstd.qcow 4M
 
 echo "Creating: qcow version 3; with image data file"
 qemu-img create -f qcow2 -o compat=v3,preallocation=metadata,data_file_raw=off,data_file=${SPECIMENS_PATH}/data_file.raw ${SPECIMENS_PATH}/version3_with_data_file.qcow 4M
